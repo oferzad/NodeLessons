@@ -800,6 +800,58 @@ namespace NodeLessons
             }
         }
 
+        //excersize from test reharsle
+        static Node<int> Groups(Node<int> list)
+        {
+            if (list == null)
+                return new Node<int>(0);
+
+            Node<int> temp = list;
+            int counter = 0;
+
+            while (temp != null)
+            {
+                counter++;
+                int val = temp.GetValue();
+                Node<int> deleted = DeleteFirstOccurance(temp, val);
+                while (deleted != null)
+                {
+                    deleted.SetNext(temp.GetNext());
+                    temp.SetNext(deleted);
+                    temp = deleted;
+                    deleted = DeleteFirstOccurance(temp, val);
+                }
+                if (!temp.HasNext())
+                {
+                    temp.SetNext(new Node<int>(counter));
+                    temp = null;
+                }
+                else
+                    temp = temp.GetNext();
+                
+            }
+            return list;
+        }
+
+        static Node<int> DeleteFirstOccurance(Node<int> list, int val)
+        {
+            if (list == null)
+                return null;
+            Node<int> temp = list;
+            while (temp.HasNext())
+            {
+                Node<int> next = temp.GetNext();
+                if (next.GetValue() == val)
+                {
+                    temp.SetNext(next.GetNext());
+                    next.SetNext(null);
+                    return next;
+                }
+                temp = temp.GetNext();
+            }
+            return null;
+        }
+
         static void Main(string[] args)
         {
             Node<int> list = new Node<int>(0);
